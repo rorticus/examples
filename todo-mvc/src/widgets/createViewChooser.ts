@@ -11,26 +11,17 @@ type TodoListOptions = WidgetOptions<ViewChooserState>;
 
 export type TodoList = Widget<ViewChooserState>;
 
-function viewList() {
-	view({ view: 'list' });
-}
-
-function viewCards() {
-	view({ view: 'cards' });
-}
-
 const createViewChooser = createWidgetBase.mixin({
 	mixin: {
 		tagName: 'ul',
 		classes: [ 'view-chooser' ],
 		getChildrenNodes: function (this: TodoList): DNode[] {
-			const { activeView = 'list' } = this.state;
+			const { activeView = 'list', filter = 'all' } = this.state;
 
 			return [
 				v('li.view-mode', {}, [
 					v('a', {
-						href: `javascript:void(0)`,
-						onclick: viewList,
+						href: `#${filter}`,
 						classes: {
 							list: true,
 							active: activeView === 'list'
@@ -39,8 +30,7 @@ const createViewChooser = createWidgetBase.mixin({
 				]),
 				v('li.view-mode', {}, [
 					v('a', {
-						href: `javascript:void(0)`,
-						onclick: viewCards,
+						href: `#cards/${filter}`,
 						classes: {
 							cards: true,
 							active: activeView === 'cards'

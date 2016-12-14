@@ -83,6 +83,11 @@ export const view = function(this: any, { view }: { view: 'list' | 'cards' }) {
 	widgetStore.patch({ id: 'todo-app', activeView });
 };
 
+export const filterAndView = function (this: any, state: { view: 'list' | 'cards', filter: 'active' | 'all' | 'completed' }) {
+	filter(state);
+	view(state);
+};
+
 export const todoToggleAll = function(event: FormEvent) {
 	toggleAll({ checked: event.target.checked });
 };

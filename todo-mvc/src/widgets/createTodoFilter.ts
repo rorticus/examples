@@ -4,20 +4,21 @@ import { v }  from 'dojo-widgets/d';
 
 type TodoFilterState = WidgetState & {
 	activeFilter?: string;
+	activeView?: string;
 };
 
 type TodoFilterOptions = WidgetOptions<TodoFilterState>;
 
 type TodoFilter = Widget<TodoFilterState>;
 
-function createFilterItems(activeFilter: string): DNode[] {
+function createFilterItems(activeFilter: string, activeView: string): DNode[] {
 	const filters = [ 'all', 'active', 'completed' ];
 	return filters.map((filterItem) => {
 		const label = filterItem[0].toUpperCase() + filterItem.substring(1);
 		return v('li', {}, [
 			v('a', {
 				innerHTML: label,
-				href: `#${filterItem}`,
+				href: `#${activeView === 'cards' ? 'cards/' : ''}${filterItem}`,
 				classes: {
 					selected: activeFilter === filterItem
 				}
@@ -32,7 +33,9 @@ const createTodoFilter = createWidgetBase.mixin({
 		classes: [ 'filters' ],
 		getChildrenNodes: function(this: TodoFilter): DNode[] {
 			const activeFilter = this.state.activeFilter || '';
-			return createFilterItems(activeFilter);
+			const activeView = this.state.activeView || '';
+
+			return createFilterItems(activeFilter, activeView);
 		}
 	}
 });
