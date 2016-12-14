@@ -5,6 +5,8 @@ export interface Item {
 	id: string;
 	label?: string;
 	completed?: boolean;
+	createdOn?: Date;
+	editing: boolean;
 }
 
 const todoStore: Store<Item> = createObservableStore({

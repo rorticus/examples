@@ -36,14 +36,14 @@ const createLabel = createWidgetBase
 		}
 	});
 
-const createTodoItem = createWidgetBase.mixin({
+const createTodoListItem = createWidgetBase.mixin({
 		mixin: {
 			tagName: 'li',
 			nodeAttributes: [
 				function(this: TodoItem): VNodeProperties {
 					const { completed, editing } = this.properties;
 					return {
-						classes: { completed, editing }
+						classes: { completed, editing, card: false }
 					};
 				}
 			],
@@ -85,4 +85,4 @@ const createTodoItem = createWidgetBase.mixin({
 		}
 });
 
-export default createTodoItem;
+export default createTodoListItem;

@@ -1,40 +1,29 @@
 import { DNode, Widget, WidgetState, WidgetOptions, WidgetProperties } from 'dojo-widgets/interfaces';
 import createProjector from 'dojo-widgets/createProjector';
-import { todoInput } from './actions/userActions';
-import { v, w } from 'dojo-widgets/d';
+import { w } from 'dojo-widgets/d';
 
-import createTitle from './widgets/createTitle';
-import createMainSection from './widgets/createMainSection';
-import createFocusableTextInput from './widgets/createFocusableTextInput';
-import createTodoFooter, { TodoFooterState } from './widgets/createTodoFooter';
+import createTodoDetails from './widgets/createTodoDetails';
+import FactoryRegistry from 'dojo-widgets/FactoryRegistry';
+import createHome from './widgets/createHome';
+
+const widgetRegistry = new FactoryRegistry();
+
+interface AppProperties {
+	widgets: any;
+}
+
+widgetRegistry.define('main', createHome);
+widgetRegistry.define('todo-details', createTodoDetails);
 
 const createApp = createProjector.mixin({
 	mixin: {
-		getChildrenNodes: function(this: Widget<WidgetState, WidgetProperties>): DNode[] {
-			const { state } = this;
-			const { todo, todos } = <any> state;
-			const newTodoOptions: WidgetOptions<WidgetState, WidgetProperties> = {
-				id: 'new-todo',
-				properties: {
-					id: 'new-todo',
-					classes: ['new-todo'],
-					focused: true,
-					value: todo ? todo : '',
-					placeholder: 'What needs to be done?'
-				},
-				listeners: { keypress: todoInput }
-			};
-			const classes = todos && todos.length ? [] : [ 'hidden' ];
-			const todoFooterState: TodoFooterState = Object.assign({ classes }, state);
+		registry: widgetRegistry,
+		getChildrenNodes: function(this: Widget<WidgetState & AppProperties, AppProperties>): DNode[] {
+			const { widgets = [ 'main' ] } = this.state;
 
-			return [
-				v('header', {}, [
-					w(createTitle, { id: 'title', properties: { label: 'todos' } }),
-					w(createFocusableTextInput, newTodoOptions)
-				]),
-				w(createMainSection, { id: 'main-section', properties: state }),
-				w(createTodoFooter, { id: 'todo-footer', properties: todoFooterState })
-			];
+			return widgets.map((widget: any) => {
+				return w(widget[ 0 ], { properties: this.state, ...widget[ 1 ] });
+			});
 		},
 		classes: [ 'todoapp' ],
 		tagName: 'section'

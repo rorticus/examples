@@ -1,7 +1,8 @@
 import { assign } from 'dojo-core/lang';
 import widgetStore from '../stores/widgetStore';
 import { addTodo, deleteCompleted, deleteTodo, toggleAll, updateTodo } from './todoStoreActions';
-import { TodoItemProperties } from '../widgets/createTodoItem';
+import router, { todoViewRoute } from '../routes';
+import { Item } from '../stores/todoStore';
 
 interface FormEvent extends Event {
 	target: HTMLInputElement;
@@ -18,10 +19,10 @@ export const todoInput = function({ which, target: { value: label } }: FormInput
 	}
 };
 
-function toggleEditing(todos: TodoItemProperties[], todoId: string, editing: boolean): TodoItemProperties[] {
+function toggleEditing(todos: Item[], todoId: string, editing: boolean): Item[] {
 	return todos
 		.filter((todo) => todo.id === todoId)
-		.map((todo) => {
+		.map((todo: Item) => {
 			todo.editing = true;
 			return todo;
 		});
@@ -33,9 +34,12 @@ export const todoEdit = function(this: any, event: KeyboardEvent) {
 		return;
 	}
 	widgetStore.get('todo-app').then((todoListState: any) => {
-		const { todos } = todoListState;
-		todoListState.todos = toggleEditing(todos, id, true);
-		return widgetStore.patch({ id: 'todo-app', todoListState });
+		const link = router.link(todoViewRoute, {
+			filter: todoListState.activeFilter,
+			view: todoListState.activeView,
+			todoId: id
+		});
+		document.location.href = link;
 	});
 };
 
@@ -70,12 +74,7 @@ export const todoRemove = function(this: any) {
 
 export const todoToggleComplete = function(this: any) {
 	const { state } = this;
-	updateTodo({ id: state.id, completed: !state.checked });
-};
-
-export const filter = function(this: any, { filter }: { filter: 'active' | 'all' | 'completed' }) {
-	const { state: { activeFilter = filter } = { } } = this;
-	widgetStore.patch({ id: 'todo-app', activeFilter });
+	updateTodo({ id: state.id, completed: !state.checked, editing: false });
 };
 
 export const todoToggleAll = function(event: FormEvent) {
@@ -84,4 +83,12 @@ export const todoToggleAll = function(event: FormEvent) {
 
 export const clearCompleted = function() {
 	deleteCompleted();
+};
+
+export const updateSearch = function(this: any, searchQuery: string) {
+	widgetStore.get('todo-app').then((todoListState: any) => {
+		todoListState.search = searchQuery;
+
+		widgetStore.patch({ id: 'todo-app', todoListState });
+	});
 };

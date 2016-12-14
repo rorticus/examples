@@ -4,6 +4,7 @@ import { v, w } from 'dojo-widgets/d';
 import createButton from 'dojo-widgets/components/button/createButton';
 import { clearCompleted } from '../actions/userActions';
 import createTodoFilter from './createTodoFilter';
+import createViewChooser from './createViewChooser';
 
 interface TodoFooterProperties {
 	activeFilter: string;
@@ -20,7 +21,7 @@ const createTodoFooter = createWidgetBase.mixin({
 		tagName: 'footer',
 		classes: [ 'footer' ],
 		getChildrenNodes: function(this: TodoFooter): (DNode | null)[] {
-			const { activeCount, activeFilter, completedCount } = this.state;
+			const { activeCount, activeFilter, completedCount, activeView } = this.state;
 			const countLabel = activeCount === 1 ? 'item' : 'items';
 
 			return [
@@ -31,6 +32,13 @@ const createTodoFooter = createWidgetBase.mixin({
 				w(createTodoFilter, {
 					properties: {
 						classes: [ 'filters' ],
+						activeFilter,
+						activeView
+					}
+				}),
+				w(createViewChooser, {
+					state: {
+						activeView,
 						activeFilter
 					}
 				}),
