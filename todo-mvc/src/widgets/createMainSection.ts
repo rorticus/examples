@@ -4,7 +4,8 @@ import { w } from 'dojo-widgets/d';
 
 import { todoToggleAll } from '../actions/userActions';
 import createCheckboxInput from './createCheckboxInput';
-import createTodoList from './createTodoList';
+import createTodoItemList from './createTodoItemList';
+import createTodoCardList from './createTodoCardList';
 
 const createMainSection = createWidgetBase.mixin({
 	mixin: {
@@ -23,9 +24,12 @@ const createMainSection = createWidgetBase.mixin({
 				}
 			};
 
+			const {activeView } = state;
+			const listFactory = activeView === 'cards' ? createTodoCardList : createTodoItemList;
+
 			return [
 				w(createCheckboxInput, <WidgetOptions<WidgetState> > checkBoxOptions),
-				w(createTodoList, { id: 'todo-list', state })
+				w(listFactory, { id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`, state })
 			];
 		}
 	}

@@ -1,10 +1,11 @@
 import { Widget, WidgetOptions, WidgetState, DNode } from 'dojo-widgets/interfaces';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { w } from 'dojo-widgets/d';
-import createTodoItem, { TodoItemState } from './createTodoItem';
+import createTodoListItem, { TodoItemState } from './createTodoListItem';
 
 type TodoListState = WidgetState & {
 	activeFilter?: string;
+	activeView?: string;
 	todos: TodoItemState[];
 };
 
@@ -23,18 +24,19 @@ function filter(filterName: string, todo: TodoItemState): boolean {
 	}
 }
 
-const createTodoList = createWidgetBase.mixin({
+const createTodoItemList = createWidgetBase.mixin({
 		mixin: {
 			tagName: 'ul',
 			classes: [ 'todo-list' ],
 			getChildrenNodes: function(this: TodoList): DNode[] {
 				const activeFilter = this.state.activeFilter || '';
 				const todos = this.state.todos || [];
+
 				return todos
 					.filter((todo) => filter(activeFilter, todo))
-					.map((todo) => w(createTodoItem, { id: todo.id, state: todo }));
+					.map((todo) => w(createTodoListItem, { id: todo.id, state: todo }));
 			}
 		}
 	});
 
-export default createTodoList;
+export default createTodoItemList;

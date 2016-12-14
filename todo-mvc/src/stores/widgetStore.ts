@@ -8,7 +8,8 @@ export default createObservableStore({
 			todos: [],
 			completedCount: 0,
 			activeCount: 0,
-			activeFilter: 'all'
+			activeFilter: 'all',
+			activeView: 'list'
 		}
 	]
 });

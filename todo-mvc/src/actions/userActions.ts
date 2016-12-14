@@ -1,7 +1,7 @@
 import { assign } from 'dojo-core/lang';
 import widgetStore from '../stores/widgetStore';
 import { addTodo, deleteCompleted, deleteTodo, toggleAll, updateTodo } from './todoStoreActions';
-import { TodoItemState } from '../widgets/createTodoItem';
+import { TodoItemState } from '../widgets/createTodoListItem';
 
 interface FormEvent extends Event {
 	target: HTMLInputElement;
@@ -76,6 +76,11 @@ export const todoToggleComplete = function(this: any) {
 export const filter = function(this: any, { filter }: { filter: 'active' | 'all' | 'completed' }) {
 	const { state: { activeFilter = filter } = { } } = this;
 	widgetStore.patch({ id: 'todo-app', activeFilter });
+};
+
+export const view = function(this: any, { view }: { view: 'list' | 'cards' }) {
+	const { state: { activeView = view } = { } } = this;
+	widgetStore.patch({ id: 'todo-app', activeView });
 };
 
 export const todoToggleAll = function(event: FormEvent) {
