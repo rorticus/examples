@@ -1,7 +1,7 @@
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { WidgetState, WidgetOptions, Widget, DNode } from 'dojo-widgets/interfaces';
 import { v } from 'dojo-widgets/d';
-import { view } from '../actions/userActions';
+import router, { mainRoute } from '../routes';
 
 type ViewChooserState = WidgetState & {
 	activeView?: 'list' | 'cards'
@@ -16,12 +16,15 @@ const createViewChooser = createWidgetBase.mixin({
 		tagName: 'ul',
 		classes: [ 'view-chooser' ],
 		getChildrenNodes: function (this: TodoList): DNode[] {
-			const { activeView = 'list', filter = 'all' } = this.state;
+			const { activeView = 'list', activeFilter = 'all' } = this.state;
 
 			return [
 				v('li.view-mode', {}, [
 					v('a', {
-						href: `#${filter}`,
+						href: router.link(mainRoute, {
+							filter: activeFilter,
+							view: 'list'
+						}),
 						classes: {
 							list: true,
 							active: activeView === 'list'
@@ -30,7 +33,10 @@ const createViewChooser = createWidgetBase.mixin({
 				]),
 				v('li.view-mode', {}, [
 					v('a', {
-						href: `#cards/${filter}`,
+						href: router.link(mainRoute, {
+							filter: activeFilter,
+							view: 'cards'
+						}),
 						classes: {
 							cards: true,
 							active: activeView === 'cards'

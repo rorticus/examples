@@ -39,7 +39,7 @@ const createTodoFooter = createWidgetBase.mixin({
 				w(createViewChooser, {
 					state: {
 						activeView,
-						filter: activeFilter
+						activeFilter
 					}
 				}),
 				completedCount ? w(createButton, {

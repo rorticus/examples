@@ -2,6 +2,7 @@ import { assign } from 'dojo-core/lang';
 import widgetStore from '../stores/widgetStore';
 import { addTodo, deleteCompleted, deleteTodo, toggleAll, updateTodo } from './todoStoreActions';
 import { TodoItemState } from '../widgets/createTodoListItem';
+import router, { todoViewRoute } from '../routes';
 
 interface FormEvent extends Event {
 	target: HTMLInputElement;
@@ -33,9 +34,12 @@ export const todoEdit = function(this: any, event: KeyboardEvent) {
 		return;
 	}
 	widgetStore.get('todo-app').then(([ todoListState ]: [ any ]) => {
-		const { todos } = todoListState;
-		todoListState.todos = toggleEditing(todos, id, true);
-		return widgetStore.patch({ id: 'todo-app', todoListState });
+		const link = router.link(todoViewRoute, {
+			filter: todoListState.activeFilter,
+			view: todoListState.activeView,
+			todoId: id
+		});
+		document.location.href = link;
 	});
 };
 
@@ -73,19 +77,13 @@ export const todoToggleComplete = function(this: any) {
 	updateTodo({ id: state.id, completed: !state.checked });
 };
 
-export const filter = function(this: any, { filter }: { filter: 'active' | 'all' | 'completed' }) {
-	const { state: { activeFilter = filter } = { } } = this;
-	widgetStore.patch({ id: 'todo-app', activeFilter });
-};
+export const setHierarchy = function (this: any, widgets: [ string, any ][]) {
+	widgetStore.patch({ id: 'todo-app', widgets });
+}
 
-export const view = function(this: any, { view }: { view: 'list' | 'cards' }) {
-	const { state: { activeView = view } = { } } = this;
-	widgetStore.patch({ id: 'todo-app', activeView });
-};
-
-export const filterAndView = function (this: any, state: { view: 'list' | 'cards', filter: 'active' | 'all' | 'completed' }) {
-	filter(state);
-	view(state);
+export const filterAndView = function (this: any, filter: 'active' | 'all' | 'completed', view: 'list' | 'cards') {
+	const { state: { activeView = view, activeFilter = filter } = { } } = this;
+	widgetStore.patch({ id: 'todo-app', activeView, activeFilter });
 };
 
 export const todoToggleAll = function(event: FormEvent) {

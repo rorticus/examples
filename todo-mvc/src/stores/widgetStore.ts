@@ -9,7 +9,8 @@ export default createObservableStore({
 			completedCount: 0,
 			activeCount: 0,
 			activeFilter: 'all',
-			activeView: 'list'
+			activeView: 'list',
+			widgets: []
 		}
 	]
 });

@@ -2,54 +2,77 @@ import createRoute from 'dojo-routing/createRoute';
 import createRouter from 'dojo-routing/createRouter';
 import { Parameters } from 'dojo-routing/interfaces';
 import createHashHistory from 'dojo-routing/history/createHashHistory';
+import { filterAndView, setHierarchy } from './actions/userActions';
 
-import { filterAndView } from './actions/userActions';
+type FilterValue = 'active' | 'all' | 'completed';
+type ViewValue = 'list' | 'cards';
 
-interface FilterParameters extends Parameters {
-	filter: 'active' | 'all' | 'completed';
+interface AppParameters extends Parameters {
+	filter: FilterValue;
+	view: ViewValue;
 }
 
-function getFilterState(filter: string): FilterParameters | null {
-	switch (filter) {
-		case 'active':
-			return { filter: 'active' };
-		case 'all':
-			return { filter: 'all' };
-		case 'completed':
-			return { filter: 'completed' };
-		default:
-			return null;
-	}
+interface TodoIdParameter extends Parameters {
+	todoId: string;
 }
 
-const filterRoute = createRoute<FilterParameters>({
-	path: '/{filter}',
+export const mainRoute = createRoute<AppParameters>({
+	path: '/{filter}?{view}',
 
-	params([filter]) {
-		return getFilterState(filter);
+	params([ filter ], searchParams) {
+		let activeFilter: FilterValue;
+		let activeView: ViewValue;
+		const view = searchParams.get('view');
+
+		switch (filter) {
+			case 'active':
+			case 'all':
+			case 'completed':
+				activeFilter = filter;
+				break;
+			default:
+				activeFilter = 'all';
+		}
+
+		switch (view) {
+			case 'cards':
+			case 'list':
+				activeView = view;
+				break;
+			default:
+				activeView = 'list';
+		}
+
+		return {
+			filter: activeFilter,
+			view: activeView
+		};
 	},
 
 	exec(request) {
-		const { filter } = request.params;
-		return filterAndView({ filter, view: 'list' });
+		const { filter, view = 'list' } = request.params as AppParameters;
+		setHierarchy([ [ 'main', {} ] ]);
+		return filterAndView(filter, view);
 	}
 });
 
-const cardViewRoute = createRoute<FilterParameters>({
-	path: '/cards/{filter}',
-
-	params([filter]) {
-		return getFilterState(filter);
-	},
+export const todoViewRoute = createRoute({
+	path: '/todos/{todoId}',
 
 	exec(request) {
-		const { filter } = request.params;
-		return filterAndView({ filter, view: 'cards' });
+		const { todoId } = request.params as TodoIdParameter;
+
+		return setHierarchy([ [ 'main', {} ], [ 'todo-details', { todoId } ] ]);
 	}
 });
 
-const router = createRouter({ history: createHashHistory() });
-router.append(filterRoute);
-router.append(cardViewRoute);
+const router = createRouter({
+	history: createHashHistory(), fallback() {
+		setHierarchy([ [ 'main', {} ] ]);
+		return filterAndView('all', 'list');
+	}
+});
+mainRoute.append(todoViewRoute);
+router.append(mainRoute);
 
 export default router;

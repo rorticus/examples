@@ -1,6 +1,7 @@
 import { Widget, WidgetOptions, WidgetState, DNode } from 'dojo-widgets/interfaces';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { v }  from 'dojo-widgets/d';
+import router, { mainRoute } from '../routes';
 
 type TodoFilterState = WidgetState & {
 	activeFilter?: string;
@@ -18,7 +19,10 @@ function createFilterItems(activeFilter: string, activeView: string): DNode[] {
 		return v('li', {}, [
 			v('a', {
 				innerHTML: label,
-				href: `#${activeView === 'cards' ? 'cards/' : ''}${filterItem}`,
+				href: router.link(mainRoute, {
+					filter: filterItem,
+					view: activeView
+				}),
 				classes: {
 					selected: activeFilter === filterItem
 				}
