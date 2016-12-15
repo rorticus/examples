@@ -36,7 +36,7 @@ const createFocusableTextInput = createWidgetBase
 					const afterUpdate = afterUpdateFunctions.get(this);
 					const { placeholder, value } = this.state;
 					return {
-						afterUpdate,
+						// afterUpdate,
 						placeholder,
 						value,
 						afterCreate: afterUpdate

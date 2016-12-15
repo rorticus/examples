@@ -11,6 +11,10 @@ export default createObservableStore({
 			activeFilter: 'all',
 			activeView: 'list',
 			widgets: []
+		},
+		{
+			id: 'todo-details',
+			todoDetails: undefined
 		}
 	]
 });
