@@ -84,3 +84,11 @@ export const todoToggleAll = function(event: FormEvent) {
 export const clearCompleted = function() {
 	deleteCompleted();
 };
+
+export const updateSearch = function(this: any, searchQuery: string) {
+	widgetStore.get('todo-app').then(([ todoListState ]: [ any ]) => {
+		todoListState.search = searchQuery;
+
+		widgetStore.patch({ id: 'todo-app', todoListState });
+	});
+};

@@ -1,18 +1,23 @@
 import { DNode, Widget, WidgetState, WidgetOptions } from 'dojo-widgets/interfaces';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
-import { w } from 'dojo-widgets/d';
+import { w, v } from 'dojo-widgets/d';
 
-import { todoToggleAll } from '../actions/userActions';
+import { todoToggleAll, updateSearch } from '../actions/userActions';
 import createCheckboxInput from './createCheckboxInput';
 import createTodoItemList from './createTodoItemList';
 import createTodoCardList from './createTodoCardList';
+import createSearchInput from './createSearchInput';
+
+function searchHandler(event: any) {
+	updateSearch(event.target.value);
+}
 
 const createMainSection = createWidgetBase.mixin({
 	mixin: {
 		tagName: 'section',
 		classes: [ 'main' ],
 		getChildrenNodes: function (this: Widget<WidgetState>): DNode[] {
-			const { state } = this;
+			const { state } = <any> this
 			const checkBoxOptions = {
 				id: 'todo-toggle',
 				state: {
@@ -27,9 +32,21 @@ const createMainSection = createWidgetBase.mixin({
 			const {activeView } = state;
 			const listFactory = activeView === 'cards' ? createTodoCardList : createTodoItemList;
 
-			return [
+			return <DNode[]>[
 				w(createCheckboxInput, <WidgetOptions<WidgetState> > checkBoxOptions),
-				w(listFactory, { id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`, state })
+				state.todos.length ? v('div.searchbar', {}, [
+					v('span.icon', {}),
+					w(createSearchInput, {
+						state: {
+							placeholder: 'Quick Filter',
+							value: state.search
+						},
+						listeners: {
+							input: searchHandler
+						}
+					})
+				]) : null,
+				w(listFactory, <WidgetOptions<WidgetState> > { id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`, state })
 			];
 		}
 	}
