@@ -12,7 +12,7 @@ export const putTodo = function({ afterAll = [] }: StoreDelta<any>) {
 
 export const setHierarchy = function (this: any, widgets: [ string, any ][]) {
 	widgetStore.patch({ id: 'todo-app', widgets });
-}
+};
 
 export const filterAndView = function (this: any, filter: 'active' | 'all' | 'completed', view: 'list' | 'cards') {
 	const { state: { activeView = view, activeFilter = filter } = { } } = this;

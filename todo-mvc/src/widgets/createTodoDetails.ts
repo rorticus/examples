@@ -21,9 +21,13 @@ const createFocusableTextArea = createFocusableTextInput.mixin({
 	}
 });
 
-const completedHandlers = new WeakMap<TodoDetails, (event: any) => void>();
-const textUpdateHandlers = new WeakMap<TodoDetails, (event: any) => void>();
-const closeHandlers = new WeakMap<TodoDetails, (event: any) => void>();
+interface EventHandler {
+	(event: any): void;
+}
+
+const completedHandlers = new WeakMap<TodoDetails, EventHandler>();
+const textUpdateHandlers = new WeakMap<TodoDetails, EventHandler>();
+const closeHandlers = new WeakMap<TodoDetails, EventHandler>();
 
 const createTodoDetails = createWidgetBase
 	.mixin({
@@ -34,7 +38,6 @@ const createTodoDetails = createWidgetBase
 				const { todoDetails } = this.state as TodoDetailsState;
 
 				const { label = '', completed = false, createdOn = new Date() } = todoDetails || {};
-
 
 				return [
 					v('div.backdrop', {}),

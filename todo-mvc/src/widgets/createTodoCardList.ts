@@ -1,4 +1,4 @@
-import { Widget, WidgetOptions, WidgetState, DNode } from 'dojo-widgets/interfaces';
+import { WidgetState, DNode } from 'dojo-widgets/interfaces';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { w, v } from 'dojo-widgets/d';
 import createTodoCardItem from './createTodoCardItem';

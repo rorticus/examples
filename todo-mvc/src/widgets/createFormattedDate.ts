@@ -13,11 +13,11 @@ const createFormattedDate = createWidgetBase.mixin({
 				const minutes = date.getMinutes();
 				let suffix = 'am';
 
-				if(hours >= 12) {
+				if (hours >= 12) {
 					suffix = 'pm';
 
 					hours = hours % 12;
-					if(!hours) {
+					if (!hours) {
 						hours = 12;
 					}
 				}
