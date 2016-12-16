@@ -191,21 +191,25 @@ $green = #bddad5;
 	}
 }
 
+body {
+	position: relative;
+}
+
 .todo-details {
 	.backdrop {
-		position: absolute;
-		left: -152px;
-		top: 0;
+		position: fixed;
+		left: 0;
+		top: -0;
 		overflow: hidden;
-		width: 150%;
-		height: 150%;
+		width: 100%;
+		height: 100%;
 		z-index: 99;
-		background-color: rgba(0, 0, 0, 0.25);
+		background-color: rgba(255, 255, 255, 0.75);
 	}
 
 	.modal {
 		position: fixed;
-		top: 130px;
+		top: 230px;
 		left: 50%;
 		width: 600px;
 		transform: translate(-50%, -50%);

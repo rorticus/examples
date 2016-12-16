@@ -2,9 +2,7 @@ import createRoute from 'dojo-routing/createRoute';
 import createRouter from 'dojo-routing/createRouter';
 import { Parameters } from 'dojo-routing/interfaces';
 import createHashHistory from 'dojo-routing/history/createHashHistory';
-import { filterAndView, setHierarchy } from './actions/userActions';
-import todoStore from './stores/todoStore';
-import widgetStore from './stores/widgetStore';
+import { filterAndView, setHierarchy, showTodoDetails } from './actions/widgetStoreActions';
 
 type FilterValue = 'active' | 'all' | 'completed';
 type ViewValue = 'list' | 'cards';
@@ -64,11 +62,7 @@ export const todoViewRoute = createRoute({
 	exec(request) {
 		const { todoId } = request.params as TodoIdParameter;
 
-		return todoStore.get(todoId).then(([ todo ]) => {
-			widgetStore.patch({ id: 'todo-details', todoDetails: todo }).then(() => {
-				setHierarchy([ [ 'main', {} ], [ 'todo-details', { id: 'todo-details', stateFrom: widgetStore } ] ]);
-			});
-		});
+		return showTodoDetails(todoId);
 	}
 });
 

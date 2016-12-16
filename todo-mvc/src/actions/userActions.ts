@@ -77,15 +77,6 @@ export const todoToggleComplete = function(this: any) {
 	updateTodo({ id: state.id, completed: !state.checked });
 };
 
-export const setHierarchy = function (this: any, widgets: [ string, any ][]) {
-	widgetStore.patch({ id: 'todo-app', widgets });
-}
-
-export const filterAndView = function (this: any, filter: 'active' | 'all' | 'completed', view: 'list' | 'cards') {
-	const { state: { activeView = view, activeFilter = filter } = { } } = this;
-	widgetStore.patch({ id: 'todo-app', activeView, activeFilter });
-};
-
 export const todoToggleAll = function(event: FormEvent) {
 	toggleAll({ checked: event.target.checked });
 };
