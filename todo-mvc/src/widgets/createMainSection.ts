@@ -17,7 +17,7 @@ const createMainSection = createWidgetBase.mixin({
 		tagName: 'section',
 		classes: [ 'main' ],
 		getChildrenNodes: function (this: Widget<WidgetState>): DNode[] {
-			const { state } = <any> this
+			const { state } = <any> this;
 			const checkBoxOptions = {
 				id: 'todo-toggle',
 				state: {
@@ -29,24 +29,27 @@ const createMainSection = createWidgetBase.mixin({
 				}
 			};
 
-			const {activeView } = state;
+			const { activeView } = state;
 			const listFactory = activeView === 'cards' ? createTodoCardList : createTodoItemList;
 
-			return <DNode[]>[
+			return <DNode[]> [
 				w(createCheckboxInput, <WidgetOptions<WidgetState> > checkBoxOptions),
 				state.todos.length ? v('div.searchbar', {}, [
-					v('span.icon', {}),
-					w(createSearchInput, {
-						state: {
-							placeholder: 'Quick Filter',
-							value: state.search
-						},
-						listeners: {
-							input: searchHandler
-						}
-					})
-				]) : null,
-				w(listFactory, <WidgetOptions<WidgetState> > { id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`, state })
+						v('span.icon', {}),
+						w(createSearchInput, {
+							state: {
+								placeholder: 'Quick Filter',
+								value: state.search
+							},
+							listeners: {
+								input: searchHandler
+							}
+						})
+					]) : null,
+				w(listFactory, <WidgetOptions<WidgetState> > {
+					id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`,
+					state
+				})
 			];
 		}
 	}
