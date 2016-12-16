@@ -7,7 +7,7 @@ import createFocusableTextInput from './createFocusableTextInput';
 import createCheckboxInput from './createCheckboxInput';
 import { updateTodo } from '../actions/todoStoreActions';
 import { FocusableTextInput } from './createFocusableTextInput';
-import { ValueChangeEvent } from 'dojo-widgets/mixins/createFormFieldMixin';
+import createFormattedDate from './createFormattedDate';
 
 export type TodoDetailsState = WidgetState & {
 	todoDetails?: Item
@@ -33,7 +33,7 @@ const createTodoDetails = createWidgetBase
 			getChildrenNodes(this: TodoDetails): DNode[] {
 				const { todoDetails } = this.state as TodoDetailsState;
 
-				const { label = '', completed = false } = todoDetails || {};
+				const { label = '', completed = false, createdOn = new Date() } = todoDetails || {};
 
 
 				return [
@@ -55,9 +55,14 @@ const createTodoDetails = createWidgetBase
 								state: { focused: true, value: label }
 							}),
 							v('div', {}, [
-								v('div.last-updated', {
-									innerHTML: 'Last Updated: 12/15/2016 @ 3:01pm'
-								}),
+								v('div.last-updated', [
+									'Created on ',
+									w(createFormattedDate, {
+										state: {
+											date: createdOn
+										}
+									})
+								]),
 								w(createCheckboxInput, {
 									listeners: { change: completedHandlers.get(this) },
 									state: { classes: [ 'toggle' ], checked: completed }
