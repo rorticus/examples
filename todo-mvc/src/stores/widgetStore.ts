@@ -4,18 +4,28 @@ export default createObservableStore({
 	data: [
 		{
 			id: 'todo-app',
-			todo: '',
-			todos: [],
-			completedCount: 0,
-			activeCount: 0,
-			activeFilter: 'all',
-			activeView: 'list',
-			search: '',
 			widgets: []
 		},
 		{
+			id: 'home',
+			todo: '',
+			todos: [],
+			activeFilter: 'all',
+			activeView: 'list',
+			search: ''
+		},
+		{
+			id: 'todo-footer',
+			activeCount: 0,
+			completedCount: 0,
+			allCompleted: 0
+		},
+		{
 			id: 'todo-details',
-			todoDetails: undefined
+			todoId: '',
+			completed: false,
+			label: '',
+			createdOn: null
 		}
 	]
 });

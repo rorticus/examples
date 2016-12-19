@@ -18,7 +18,7 @@ const createApp = createProjector.mixin({
 			const { widgets = [ 'main' ] } = this.state;
 
 			return widgets.map((widget: any) => {
-				return w(widget[ 0 ], { state: this.state, ...widget[ 1 ] });
+				return w(widget[ 0 ], { ...widget[ 1 ] });
 			});
 		},
 		classes: [ 'todoapp' ],

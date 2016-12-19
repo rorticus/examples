@@ -10,7 +10,9 @@ import { FocusableTextInput } from './createFocusableTextInput';
 import createFormattedDate from './createFormattedDate';
 
 export type TodoDetailsState = WidgetState & {
-	todoDetails?: Item
+	todoId?: string;
+	completed?: boolean;
+	label?: string;
 };
 
 export type TodoDetails = Widget<TodoDetailsState>;
@@ -35,9 +37,7 @@ const createTodoDetails = createWidgetBase
 			tagName: 'div',
 			classes: [ 'todo-details' ],
 			getChildrenNodes(this: TodoDetails): DNode[] {
-				const { todoDetails } = this.state as TodoDetailsState;
-
-				const { label = '', completed = false, createdOn = new Date() } = todoDetails || {};
+				const { label = '', completed = false, createdOn = new Date() } = this.state as TodoDetailsState;
 
 				return [
 					v('div.backdrop', {}),
@@ -85,17 +85,21 @@ const createTodoDetails = createWidgetBase
 			});
 
 			completedHandlers.set(instance, () => {
-				(<any> instance.state).todoDetails.completed = !(<any> instance.state).todoDetails.completed;
+				(<any> instance.state).completed = !(<any> instance.state).completed;
 				instance.invalidate();
 			});
 
 			textUpdateHandlers.set(instance, function (this: FocusableTextInput, event: any) {
 				// this.value = event.target.value;
-				(<any> instance.state).todoDetails.label = event.target.value;
+				(<any> instance.state).label = event.target.value;
 			});
 
 			closeHandlers.set(instance, () => {
-				updateTodo((<any> instance.state).todoDetails).then(() => {
+				updateTodo({
+					id: (<TodoDetailsState> instance.state).todoId || '',
+					completed: (<TodoDetailsState> instance.state).completed || false,
+					label: (<TodoDetailsState> instance.state).label || ''
+				}).then(() => {
 					document.location.href = closeLink;
 				});
 			});

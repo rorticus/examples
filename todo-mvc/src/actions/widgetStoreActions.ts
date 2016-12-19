@@ -3,11 +3,10 @@ import widgetStore from '../stores/widgetStore';
 import todoStore from '../stores/todoStore';
 
 export const putTodo = function({ afterAll = [] }: StoreDelta<any>) {
-	const completedCount = afterAll.filter(({ completed }) => completed).length;
-	const activeCount = afterAll.length - completedCount;
-	const allCompleted = afterAll.length === completedCount;
-
-	return widgetStore.patch({ id: 'todo-app', todos: afterAll, activeCount, completedCount, allCompleted });
+	return widgetStore.patch([
+		{ id: 'todo-app' },
+		{ id: 'home', todos: afterAll }
+	]);
 };
 
 export const setHierarchy = function (this: any, widgets: [ string, any ][]) {
@@ -16,12 +15,18 @@ export const setHierarchy = function (this: any, widgets: [ string, any ][]) {
 
 export const filterAndView = function (this: any, filter: 'active' | 'all' | 'completed', view: 'list' | 'cards') {
 	const { state: { activeView = view, activeFilter = filter } = { } } = this;
-	widgetStore.patch({ id: 'todo-app', activeView, activeFilter });
+	widgetStore.patch({ id: 'home', activeView, activeFilter });
 };
 
 export const showTodoDetails = function(todoId: string) {
 	return todoStore.get(todoId).then(([ todo ]) => {
-		widgetStore.patch({ id: 'todo-details', todoDetails: todo }).then(() => {
+		widgetStore.patch({
+			id: 'todo-details',
+			todoId: todo.id,
+			completed: todo.completed,
+			label: todo.label,
+			createdOn: todo.createdOn
+		}).then(() => {
 			setHierarchy([ [ 'main', {} ], [ 'todo-details', { id: 'todo-details', stateFrom: widgetStore } ] ]);
 		});
 	});

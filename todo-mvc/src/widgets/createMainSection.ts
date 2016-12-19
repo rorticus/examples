@@ -7,17 +7,25 @@ import createCheckboxInput from './createCheckboxInput';
 import createTodoItemList from './createTodoItemList';
 import createTodoCardList from './createTodoCardList';
 import createSearchInput from './createSearchInput';
+import { Item } from '../stores/todoStore';
 
 function searchHandler(event: any) {
 	updateSearch(event.target.value);
+}
+
+interface MainState extends WidgetState {
+	activeView?: 'list' | 'cards';
+	activeFilter?: string;
+	todos?: Item[];
+	search?: string;
 }
 
 const createMainSection = createWidgetBase.mixin({
 	mixin: {
 		tagName: 'section',
 		classes: [ 'main' ],
-		getChildrenNodes: function (this: Widget<WidgetState>): DNode[] {
-			const { state } = <any> this;
+		getChildrenNodes: function (this: Widget<MainState>): DNode[] {
+			const { state } = this;
 			const checkBoxOptions = {
 				id: 'todo-toggle',
 				state: {
@@ -29,17 +37,17 @@ const createMainSection = createWidgetBase.mixin({
 				}
 			};
 
-			const { activeView } = state;
+			const { todos = [], activeView = 'list', search = '' } = state;
 			const listFactory = activeView === 'cards' ? createTodoCardList : createTodoItemList;
 
 			return <DNode[]> [
 				w(createCheckboxInput, <WidgetOptions<WidgetState> > checkBoxOptions),
-				state.todos.length ? v('div.searchbar', {}, [
+				todos.length ? v('div.searchbar', {}, [
 						v('span.icon', {}),
 						w(createSearchInput, {
 							state: {
 								placeholder: 'Quick Filter',
-								value: state.search
+								value: search
 							},
 							listeners: {
 								input: searchHandler

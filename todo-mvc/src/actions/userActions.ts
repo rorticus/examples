@@ -15,7 +15,7 @@ interface FormInputEvent extends KeyboardEvent {
 export const todoInput = function({ which, target: { value: label } }: FormInputEvent) {
 	if (which === 13 && label) {
 		addTodo({ label, completed: false });
-		widgetStore.patch({ id: 'todo-app', todo: '' });
+		widgetStore.patch({ id: 'home', todo: '' });
 	}
 };
 
@@ -33,7 +33,7 @@ export const todoEdit = function(this: any, event: KeyboardEvent) {
 	if (event.type === 'keypress' && event.which !== 13 && event.which !== 32) {
 		return;
 	}
-	widgetStore.get('todo-app').then(([ todoListState ]: [ any ]) => {
+	widgetStore.get('home').then(([ todoListState ]: [ any ]) => {
 		const link = router.link(todoViewRoute, {
 			filter: todoListState.activeFilter,
 			view: todoListState.activeView,
@@ -49,10 +49,10 @@ export const todoEditInput = function(this: any, event: FormInputEvent) {
 		todoSave.call(this, event);
 	}
 	else if (event.which === 27) {
-		widgetStore.get('todo-app').then(([ todoListState ]: [ any ]) => {
+		widgetStore.get('home').then(([ todoListState ]: [ any ]) => {
 			const { todos } = todoListState;
 			todoListState.todos = toggleEditing(todos, state.id, false);
-			widgetStore.patch({ id: 'todo-app', todoListState });
+			widgetStore.patch({ id: 'home', todoListState });
 		});
 	}
 };
@@ -86,9 +86,9 @@ export const clearCompleted = function() {
 };
 
 export const updateSearch = function(this: any, searchQuery: string) {
-	widgetStore.get('todo-app').then(([ todoListState ]: [ any ]) => {
+	widgetStore.get('home').then(([ todoListState ]: [ any ]) => {
 		todoListState.search = searchQuery;
 
-		widgetStore.patch({ id: 'todo-app', todoListState });
+		widgetStore.patch({ id: 'home', todoListState });
 	});
 };

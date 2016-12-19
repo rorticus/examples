@@ -3,6 +3,7 @@ import createRouter from 'dojo-routing/createRouter';
 import { Parameters } from 'dojo-routing/interfaces';
 import createHashHistory from 'dojo-routing/history/createHashHistory';
 import { filterAndView, setHierarchy, showTodoDetails } from './actions/widgetStoreActions';
+import widgetStore from './stores/widgetStore';
 
 type FilterValue = 'active' | 'all' | 'completed';
 type ViewValue = 'list' | 'cards';
@@ -51,7 +52,7 @@ export const mainRoute = createRoute<AppParameters>({
 
 	exec(request) {
 		const { filter, view = 'list' } = request.params as AppParameters;
-		setHierarchy([ [ 'main', {} ] ]);
+		setHierarchy([ [ 'main', { id: 'home', stateFrom: widgetStore } ] ]);
 		return filterAndView(filter, view);
 	}
 });
@@ -67,8 +68,9 @@ export const todoViewRoute = createRoute({
 });
 
 const router = createRouter({
-	history: createHashHistory(), fallback() {
-		setHierarchy([ [ 'main', {} ] ]);
+	history: createHashHistory(),
+	fallback() {
+		setHierarchy([ [ 'main', { id: 'home', stateFrom: widgetStore } ] ]);
 		return filterAndView('all', 'list');
 	}
 });
