@@ -11,6 +11,7 @@ type ViewValue = 'list' | 'cards';
 interface AppParameters extends Parameters {
 	filter: FilterValue;
 	view: ViewValue;
+	page: number;
 }
 
 interface TodoIdParameter extends Parameters {
@@ -18,7 +19,7 @@ interface TodoIdParameter extends Parameters {
 }
 
 export const mainRoute = createRoute<AppParameters>({
-	path: '/{filter}?{view}',
+	path: '/{filter}?{view}&{page}',
 
 	params([ filter ], searchParams) {
 		let activeFilter: FilterValue;
@@ -44,16 +45,22 @@ export const mainRoute = createRoute<AppParameters>({
 				activeView = 'list';
 		}
 
+		let page = Number(searchParams.get('page'));
+		if (!isNaN(page)) {
+			page = 0;
+		}
+
 		return {
 			filter: activeFilter,
-			view: activeView
+			view: activeView,
+			page
 		};
 	},
 
 	exec(request) {
-		const { filter, view = 'list' } = request.params as AppParameters;
+		const { filter, view, page } = request.params as AppParameters;
 		setHierarchy([ [ 'main', { id: 'home', stateFrom: widgetStore } ] ]);
-		return filterAndView(filter, view);
+		return filterAndView(filter, view, page);
 	}
 });
 
@@ -71,7 +78,7 @@ const router = createRouter({
 	history: createHashHistory(),
 	fallback() {
 		setHierarchy([ [ 'main', { id: 'home', stateFrom: widgetStore } ] ]);
-		return filterAndView('all', 'list');
+		return filterAndView('all', 'list', 0);
 	}
 });
 mainRoute.append(todoViewRoute);

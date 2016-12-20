@@ -16,13 +16,12 @@ const createViewChooser = createWidgetBase.mixin({
 		tagName: 'ul',
 		classes: [ 'view-chooser' ],
 		getChildrenNodes: function (this: TodoList): DNode[] {
-			const { activeView = 'list', activeFilter = 'all' } = this.state;
+			const { activeView = 'list' } = this.state;
 
 			return [
 				v('li.view-mode', {}, [
 					v('a', {
 						href: router.link(mainRoute, {
-							filter: activeFilter,
 							view: 'list'
 						}),
 						classes: {
@@ -34,7 +33,6 @@ const createViewChooser = createWidgetBase.mixin({
 				v('li.view-mode', {}, [
 					v('a', {
 						href: router.link(mainRoute, {
-							filter: activeFilter,
 							view: 'cards'
 						}),
 						classes: {

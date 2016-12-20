@@ -5,14 +5,13 @@ import router, { mainRoute } from '../routes';
 
 type TodoFilterState = WidgetState & {
 	activeFilter?: string;
-	activeView?: string;
 };
 
 type TodoFilterOptions = WidgetOptions<TodoFilterState>;
 
 type TodoFilter = Widget<TodoFilterState>;
 
-function createFilterItems(activeFilter: string, activeView: string): DNode[] {
+function createFilterItems(activeFilter: string): DNode[] {
 	const filters = [ 'all', 'active', 'completed' ];
 	return filters.map((filterItem) => {
 		const label = filterItem[0].toUpperCase() + filterItem.substring(1);
@@ -20,8 +19,7 @@ function createFilterItems(activeFilter: string, activeView: string): DNode[] {
 			v('a', {
 				innerHTML: label,
 				href: router.link(mainRoute, {
-					filter: filterItem,
-					view: activeView
+					filter: filterItem
 				}),
 				classes: {
 					selected: activeFilter === filterItem
@@ -37,9 +35,8 @@ const createTodoFilter = createWidgetBase.mixin({
 		classes: [ 'filters' ],
 		getChildrenNodes: function(this: TodoFilter): DNode[] {
 			const activeFilter = this.state.activeFilter || '';
-			const activeView = this.state.activeView || '';
 
-			return createFilterItems(activeFilter, activeView);
+			return createFilterItems(activeFilter);
 		}
 	}
 });

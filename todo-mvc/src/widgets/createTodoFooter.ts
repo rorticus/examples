@@ -32,14 +32,12 @@ const createTodoFooter = createWidgetBase.mixin({
 				w(createTodoFilter, {
 					state: {
 						classes: [ 'filters' ],
-						activeFilter,
-						activeView
+						activeFilter
 					}
 				}),
 				w(createViewChooser, {
 					state: {
-						activeView,
-						activeFilter
+						activeView
 					}
 				}),
 				completedCount ? w(createButton, {

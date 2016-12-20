@@ -12,6 +12,7 @@ export default createObservableStore({
 			todos: [],
 			activeFilter: 'all',
 			activeView: 'list',
+			activePage: 0,
 			search: ''
 		},
 		{

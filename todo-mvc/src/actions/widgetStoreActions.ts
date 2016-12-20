@@ -13,9 +13,9 @@ export const setHierarchy = function (this: any, widgets: [ string, any ][]) {
 	widgetStore.patch({ id: 'todo-app', widgets });
 };
 
-export const filterAndView = function (this: any, filter: 'active' | 'all' | 'completed', view: 'list' | 'cards') {
-	const { state: { activeView = view, activeFilter = filter } = { } } = this;
-	widgetStore.patch({ id: 'home', activeView, activeFilter });
+export const filterAndView = function (this: any, filter: 'active' | 'all' | 'completed', view: 'list' | 'cards', page: number) {
+	const { state: { activeView = view, activeFilter = filter, activePage = page } = { } } = this;
+	widgetStore.patch({ id: 'home', activeView, activeFilter, activePage });
 };
 
 export const showTodoDetails = function(todoId: string) {
