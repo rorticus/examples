@@ -15,12 +15,6 @@ export default createObservableStore({
 			search: ''
 		},
 		{
-			id: 'todo-footer',
-			activeCount: 0,
-			completedCount: 0,
-			allCompleted: 0
-		},
-		{
 			id: 'todo-details',
 			todoId: '',
 			completed: false,
