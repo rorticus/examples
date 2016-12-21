@@ -3,14 +3,21 @@ import { VNodeProperties } from 'dojo-interfaces/vdom';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { padStart } from 'dojo-shim/string';
 
+interface FormattedDateProperties {
+	date: Date;
+}
+
+export type FormattedDateState = WidgetState & FormattedDateProperties;
+export type FormattedDate = Widget<FormattedDateState, FormattedDateProperties>;
+
 const createFormattedDate = createWidgetBase.mixin({
 	mixin: {
 		tagName: 'span',
 		nodeAttributes: [
-			function (this: Widget<WidgetState & { label: string }>): VNodeProperties {
+			function (this: FormattedDate): VNodeProperties {
 				const { date = new Date() } = this.state;
 				let hours = date.getHours();
-				const minutes = date.getMinutes();
+				const minutes = String(date.getMinutes());
 				let suffix = 'am';
 
 				if (hours >= 12) {

@@ -1,6 +1,7 @@
 import { StoreDelta } from 'dojo-stores/store/mixins/createObservableStoreMixin';
 import widgetStore from '../stores/widgetStore';
 import todoStore from '../stores/todoStore';
+import { Item } from '../stores/todoStore';
 
 export const putTodo = function({ afterAll = [] }: StoreDelta<any>) {
 	const completedCount = afterAll.filter(({ completed }) => completed).length;
@@ -20,7 +21,7 @@ export const filterAndView = function (this: any, filter: 'active' | 'all' | 'co
 };
 
 export const showTodoDetails = function(todoId: string) {
-	return todoStore.get(todoId).then(([ todo ]) => {
+	return todoStore.get(todoId).then(( todo: Item) => {
 		widgetStore.patch({ id: 'todo-details', todoDetails: todo }).then(() => {
 			setHierarchy([ [ 'main', {} ], [ 'todo-details', { id: 'todo-details', stateFrom: widgetStore } ] ]);
 		});

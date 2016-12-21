@@ -16,6 +16,8 @@ export const todoInput = function({ which, target: { value: label } }: FormInput
 	if (which === 13 && label) {
 		addTodo({ label, completed: false });
 		widgetStore.patch({ id: 'todo-app', todo: '' });
+	} else {
+		widgetStore.patch({ id: 'todo-app', todo: label });
 	}
 };
 
@@ -23,7 +25,7 @@ function toggleEditing(todos: Item[], todoId: string, editing: boolean): Item[] 
 	return todos
 		.filter((todo) => todo.id === todoId)
 		.map((todo: Item) => {
-			todo.editing = true;
+			todo.editing = editing;
 			return todo;
 		});
 }

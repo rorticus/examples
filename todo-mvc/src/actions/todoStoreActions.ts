@@ -5,7 +5,7 @@ import { assign } from 'dojo-core/lang';
 let id = 0;
 
 export const addTodo = function({ label, completed }: { label: string, completed: boolean }) {
-	return todoStore.add({ id: `${id++}`, label, completed, createdOn: new Date() });
+	return todoStore.add({ id: `${id++}`, label, completed, createdOn: new Date(), editing: false });
 };
 
 export const deleteTodo = function({ id }: { id: string }) {

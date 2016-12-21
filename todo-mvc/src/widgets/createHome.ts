@@ -1,5 +1,5 @@
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
-import { Widget, DNode, WidgetState, WidgetOptions } from 'dojo-widgets/interfaces';
+import { Widget, DNode, WidgetState, WidgetOptions, WidgetProperties } from 'dojo-widgets/interfaces';
 import { todoInput } from '../actions/userActions';
 import { TodoFooterState, default as createTodoFooter } from './createTodoFooter';
 import { v, w } from 'dojo-widgets/d';
@@ -9,30 +9,28 @@ import createMainSection from './createMainSection';
 
 const createHome = createWidgetBase.mixin({
 	mixin: {
-		getChildrenNodes: function(this: Widget<WidgetState>): DNode[] {
+		getChildrenNodes: function (this: Widget<WidgetState, WidgetProperties>): DNode[] {
 			const { state } = this;
 			const { todo, todos } = <any> state;
-			const newTodoOptions: WidgetOptions<WidgetState> = {
+			const newTodoOptions: WidgetOptions<WidgetState, WidgetProperties> = {
 				id: 'new-todo',
-				state: {
+				properties: {
 					id: 'new-todo',
 					classes: ['new-todo'],
 					focused: true,
 					value: todo ? todo : '',
 					placeholder: 'What needs to be done?'
 				},
-				listeners: { keypress: todoInput }
+				listeners: { keyup: todoInput }
 			};
-			const classes = todos && todos.length ? [] : [ 'hidden' ];
-			const todoFooterState: TodoFooterState = Object.assign({ classes }, state);
 
 			return [
 				v('header', {}, [
-					w(createTitle, { id: 'title', state: { label: 'todos' } }),
+					w(createTitle, { id: 'title', properties: { label: 'todos' } }),
 					w(createFocusableTextInput, newTodoOptions)
 				]),
-				w(createMainSection, { id: 'main-section', state }),
-				w(createTodoFooter, { id: 'todo-footer', state: todoFooterState })
+				w(createMainSection, { id: 'main-section', properties: state }),
+				todos.length ? w(createTodoFooter, { id: 'todo-footer', properties: state }) : null
 			];
 		},
 		tagName: 'div'

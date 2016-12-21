@@ -9,11 +9,14 @@ import { updateTodo } from '../actions/todoStoreActions';
 import { FocusableTextInput } from './createFocusableTextInput';
 import createFormattedDate from './createFormattedDate';
 
-export type TodoDetailsState = WidgetState & {
-	todoDetails?: Item
-};
+interface TodoDetailsProperties {
+	todoDetails: Item;
+	activeFilter: string;
+	activeView: string;
+}
 
-export type TodoDetails = Widget<TodoDetailsState>;
+export type TodoDetailsState = WidgetState & TodoDetailsProperties;
+export type TodoDetails = Widget<TodoDetailsState, TodoDetailsProperties>;
 
 const createFocusableTextArea = createFocusableTextInput.mixin({
 	mixin: {
@@ -55,20 +58,20 @@ const createTodoDetails = createWidgetBase
 								listeners: {
 									input: textUpdateHandlers.get(this)
 								},
-								state: { focused: true, value: label }
+								properties: { focused: true, value: label }
 							}),
 							v('div', {}, [
 								v('div.last-updated', [
 									'Created on ',
 									w(createFormattedDate, {
-										state: {
+										properties: {
 											date: createdOn
 										}
 									})
 								]),
 								w(createCheckboxInput, {
 									listeners: { change: completedHandlers.get(this) },
-									state: { classes: [ 'toggle' ], checked: completed }
+									properties: { classes: [ 'toggle' ], checked: completed }
 								})
 							])
 						])
@@ -76,7 +79,7 @@ const createTodoDetails = createWidgetBase
 				];
 			}
 		},
-		initialize(instance) {
+		initialize(instance: TodoDetails) {
 			const { activeFilter: filter, activeView: view } = instance.state as TodoDetailsState;
 
 			const closeLink = router.link(mainRoute, {

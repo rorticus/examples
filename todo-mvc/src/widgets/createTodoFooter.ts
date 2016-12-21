@@ -7,6 +7,7 @@ import createTodoFilter from './createTodoFilter';
 import createViewChooser from './createViewChooser';
 
 interface TodoFooterProperties {
+	activeView: string;
 	activeFilter: string;
 	activeCount: number;
 	completedCount: number;
@@ -37,7 +38,7 @@ const createTodoFooter = createWidgetBase.mixin({
 					}
 				}),
 				w(createViewChooser, {
-					state: {
+					properties: {
 						activeView,
 						activeFilter
 					}

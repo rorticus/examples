@@ -5,14 +5,17 @@ import createTodoCardItem from './createTodoCardItem';
 import { TodoItemState } from './createTodoListItem';
 import { TodoList } from './createTodoItemList';
 import { VNodeProperties } from 'dojo-interfaces/vdom';
+import { Item } from '../stores/todoStore';
 
-type TodoListState = WidgetState & {
-	activeFilter?: string;
-	activeView?: string;
-	todos: TodoItemState[];
-};
+interface TodoListProperties {
+	activeFilter: string;
+	activeView: string;
+	todos: Item[];
+}
 
-function filter(filterName: string, todo: TodoItemState): boolean {
+type TodoListState = WidgetState & TodoListProperties;
+
+function filter(filterName: string, todo: Item): boolean {
 	switch (filterName) {
 		case 'completed':
 			return !!todo.completed;
@@ -23,7 +26,7 @@ function filter(filterName: string, todo: TodoItemState): boolean {
 	}
 }
 
-function applySearch(searchQuery: string, todo: TodoItemState): boolean {
+function applySearch(searchQuery: string, todo: Item): boolean {
 	return searchQuery === '' || (todo.label || '').toLowerCase().indexOf(searchQuery) >= 0;
 }
 
@@ -50,7 +53,7 @@ const createTodoItemList = createWidgetBase.mixin({
 			return todos
 				.filter((todo) => filter(activeFilter, todo))
 				.filter((todo) => applySearch(search.toLowerCase(), todo))
-				.map((todo) => <DNode> w(createTodoCardItem, { id: todo.id, state: todo }))
+				.map((todo) => <DNode> w(createTodoCardItem, { id: todo.id, properties: todo }))
 				.concat(todos.length ? [
 					v('li.empty-filler', {}),
 					v('li.empty-filler', {})

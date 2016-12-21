@@ -3,13 +3,14 @@ import { WidgetState, WidgetOptions, Widget, DNode } from 'dojo-widgets/interfac
 import { v } from 'dojo-widgets/d';
 import router, { mainRoute } from '../routes';
 
-type ViewChooserState = WidgetState & {
-	activeView?: 'list' | 'cards'
-};
+interface ViewChooserProperties {
+	activeView: 'list' | 'cards';
+	activeFilter: string;
+}
 
-type TodoListOptions = WidgetOptions<ViewChooserState>;
-
-export type TodoList = Widget<ViewChooserState>;
+type ViewChooserState = WidgetState & ViewChooserProperties;
+type TodoListOptions = WidgetOptions<ViewChooserState, ViewChooserProperties>;
+export type TodoList = Widget<ViewChooserState, ViewChooserProperties>;
 
 const createViewChooser = createWidgetBase.mixin({
 	mixin: {

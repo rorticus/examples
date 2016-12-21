@@ -9,12 +9,18 @@ import createCheckboxInput from './createCheckboxInput';
 import createFocusableTextInput from './createFocusableTextInput';
 import { TodoItem } from './createTodoListItem';
 
+interface CardItemProperties {
+	label: string;
+}
+
+type CardItemState = WidgetState & CardItemProperties;
+
 const createLabel = createWidgetBase
 	.mixin({
 		mixin: {
 			tagName: 'label',
 			nodeAttributes: [
-				function (this: Widget<WidgetState & { label: string }>): VNodeProperties {
+				function (this: Widget<CardItemState, CardItemProperties>): VNodeProperties {
 					return {
 						innerHTML: this.state.label,
 						'aria-describedby': 'edit-instructions',
@@ -48,18 +54,18 @@ const createTodoCardItem = createWidgetBase.mixin({
 					blur: todoSave,
 					keypress: todoEditInput
 				},
-				state: { id: state.id, focused, classes: [ 'edit' ] }
+				properties: { id: state.id, focused, classes: [ 'edit' ] }
 			};
 			return [
 				v('div.view', {}, [
 					v('div.header', {}, [
 						w(createCheckboxInput, {
 							listeners: { change: todoToggleComplete },
-							state: { id: state.id, classes: [ 'toggle' ], checked }
+							properties: { id: state.id, classes: [ 'toggle' ], checked }
 						}),
 						w(createButton, {
 							listeners: { click: todoRemove },
-							state: { id: state.id, classes: [ 'destroy' ] }
+							properties: { id: state.id, classes: [ 'destroy' ] }
 						})
 					]),
 					w(createLabel, {
@@ -67,7 +73,7 @@ const createTodoCardItem = createWidgetBase.mixin({
 							dblclick: todoEdit,
 							keypress: todoEdit
 						},
-						state: { id: state.id, label }
+						properties: { id: state.id, label }
 					})
 				]),
 				state.editing ?

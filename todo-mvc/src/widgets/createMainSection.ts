@@ -41,7 +41,7 @@ const createMainSection = createWidgetBase.mixin({
 				w(createCheckboxInput, <CheckboxInputOptions>  checkBoxOptions),
 				state.todos.length ? v('div.searchbar', {}, [
 						v('span.icon', {}),w(createSearchInput, {
-							state: {
+							properties: {
 								placeholder: 'Quick Filter',
 								value: state.search
 							},
