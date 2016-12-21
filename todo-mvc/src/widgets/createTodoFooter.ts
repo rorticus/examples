@@ -1,19 +1,19 @@
-import { Widget, WidgetOptions, WidgetState, DNode } from 'dojo-widgets/interfaces';
+import { Widget, WidgetOptions, WidgetState, DNode, WidgetProperties } from 'dojo-widgets/interfaces';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { v, w } from 'dojo-widgets/d';
 import createButton from 'dojo-widgets/components/button/createButton';
 import { clearCompleted } from '../actions/userActions';
 import createTodoFilter from './createTodoFilter';
 
-export type TodoFooterState = WidgetState & {
-	activeFilter?: string;
-	activeCount?: number;
-	completedCount?: number;
-};
+interface TodoFooterProperties {
+	activeFilter: string;
+	activeCount: number;
+	completedCount: number;
+}
 
-export type TodoFooterOptions = WidgetOptions<TodoFooterState>;
-
-export type TodoFooter = Widget<TodoFooterState>;
+export type TodoFooterState = WidgetState & TodoFooterProperties;
+export type TodoFooterOptions = WidgetOptions<TodoFooterState, TodoFooterProperties>;
+export type TodoFooter = Widget<TodoFooterState, TodoFooterOptions>;
 
 const createTodoFooter = createWidgetBase.mixin({
 	mixin: {
@@ -29,7 +29,7 @@ const createTodoFooter = createWidgetBase.mixin({
 					v('span', [countLabel + ' left'])
 				]),
 				w(createTodoFilter, {
-					state: {
+					properties: {
 						classes: [ 'filters' ],
 						activeFilter
 					}
@@ -38,7 +38,7 @@ const createTodoFooter = createWidgetBase.mixin({
 					listeners: {
 						click: clearCompleted
 					},
-					state: {
+					properties: {
 						label: 'Clear completed',
 						classes: [ 'clear-completed' ]
 					}

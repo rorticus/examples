@@ -1,17 +1,17 @@
 import WeakMap from 'dojo-shim/WeakMap';
 import createFormFieldMixin, { FormFieldMixin, FormFieldMixinOptions, FormFieldMixinState } from 'dojo-widgets/mixins/createFormFieldMixin';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
-import { Widget, WidgetOptions, WidgetState } from 'dojo-widgets/interfaces';
+import { Widget, WidgetOptions, WidgetState, WidgetProperties } from 'dojo-widgets/interfaces';
 import { VNodeProperties } from 'dojo-interfaces/vdom';
 
-export type FocusableTextInputState = WidgetState & FormFieldMixinState<string> & {
-	focused?: boolean;
-	placeholder?: string;
-};
+interface FocusableTextInputProperties {
+	focused: boolean;
+	placeholder: string;
+}
 
-export type FocusableTextInputOptions = WidgetOptions<FocusableTextInputState> & FormFieldMixinOptions<string, FocusableTextInputState>;
-
-export type FocusableTextInput = Widget<FocusableTextInputState> & FormFieldMixin<string, FocusableTextInputState>;
+export type FocusableTextInputState = WidgetState & FormFieldMixinState<string> & Partial<FocusableTextInputProperties>;
+export type FocusableTextInputOptions = WidgetOptions<FocusableTextInputState, FocusableTextInputProperties> & FormFieldMixinOptions<string, FocusableTextInputState>;
+export type FocusableTextInput = Widget<FocusableTextInputState, FocusableTextInputProperties> & FormFieldMixin<string, FocusableTextInputState>;
 
 const afterUpdateFunctions = new WeakMap<FocusableTextInput, {(element: HTMLInputElement): void}>();
 

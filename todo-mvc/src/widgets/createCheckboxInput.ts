@@ -3,13 +3,13 @@ import { Widget, WidgetOptions, WidgetState } from 'dojo-widgets/interfaces';
 import createFormFieldMixin, { FormFieldMixin, FormFieldMixinOptions, FormFieldMixinState } from 'dojo-widgets/mixins/createFormFieldMixin';
 import { VNodeProperties } from 'dojo-interfaces/vdom';
 
-export type CheckboxInputState = WidgetState & FormFieldMixinState<string> & {
-	checked?: boolean;
-};
+interface CheckboxInputProperties {
+	checked: boolean;
+}
 
-export type CheckboxInputOptions = WidgetOptions<CheckboxInputState> & FormFieldMixinOptions<string, CheckboxInputState>;
-
-export type CheckboxInput = Widget<CheckboxInputState> & FormFieldMixin<string, CheckboxInputState>;
+export type CheckboxInputState = WidgetState & FormFieldMixinState<string> & CheckboxInputProperties;
+export type CheckboxInputOptions = WidgetOptions<CheckboxInputState, CheckboxInputProperties> & FormFieldMixinOptions<string, CheckboxInputState>;
+export type CheckboxInput = Widget<CheckboxInputState, CheckboxInputProperties> & FormFieldMixin<string, CheckboxInputState>;
 
 const createCheckboxInput = createWidgetBase
 	.mixin(createFormFieldMixin)

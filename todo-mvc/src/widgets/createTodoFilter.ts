@@ -1,14 +1,15 @@
-import { Widget, WidgetOptions, WidgetState, DNode } from 'dojo-widgets/interfaces';
+import { Widget, WidgetOptions, WidgetState, DNode, WidgetProperties } from 'dojo-widgets/interfaces';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { v }  from 'dojo-widgets/d';
 
-type TodoFilterState = WidgetState & {
-	activeFilter?: string;
+interface TodoFilterProperties {
+	activeFilter: string;
 };
 
-type TodoFilterOptions = WidgetOptions<TodoFilterState>;
+type TodoFilterState = WidgetState & TodoFilterProperties;
+type TodoFilterOptions = WidgetOptions<TodoFilterState, TodoFilterProperties>;
 
-type TodoFilter = Widget<TodoFilterState>;
+type TodoFilter = Widget<TodoFilterState, TodoFilterOptions>;
 
 function createFilterItems(activeFilter: string): DNode[] {
 	const filters = [ 'all', 'active', 'completed' ];

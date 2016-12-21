@@ -1,4 +1,4 @@
-import { Widget, WidgetOptions, WidgetState, DNode } from 'dojo-widgets/interfaces';
+import { Widget, WidgetOptions, WidgetState, DNode, WidgetProperties } from 'dojo-widgets/interfaces';
 import { VNodeProperties } from 'dojo-interfaces/vdom';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { v, w } from 'dojo-widgets/d';
@@ -8,24 +8,26 @@ import { todoEdit, todoEditInput, todoRemove, todoSave, todoToggleComplete } fro
 import createCheckboxInput from './createCheckboxInput';
 import createFocusableTextInput from './createFocusableTextInput';
 
-export type TodoItemState = WidgetState & {
-	label?: string;
-	editing?: boolean;
-	completed?: boolean;
-};
+export interface TodoItemProperties {
+	id: string;
+	label: string;
+	editing: boolean;
+	completed: boolean;
+}
 
-export type TodoItemOptions = WidgetOptions<TodoItemState>;
+export type TodoItemState = WidgetState & TodoItemProperties;
+export type TodoItemOptions = WidgetOptions<TodoItemState, TodoItemProperties>;
 
-export type TodoItem = Widget<TodoItemState>;
+export type TodoItem = Widget<TodoItemState, TodoItemProperties>;
 
 const createLabel = createWidgetBase
 	.mixin({
 		mixin: {
 			tagName: 'label',
 			nodeAttributes: [
-				function (this: Widget<WidgetState & { label: string }>): VNodeProperties {
+				function (this: TodoItem): VNodeProperties {
 					return {
-						innerHTML: this.state.label,
+						innerHTML: this.properties.label,
 						'aria-describedby': 'edit-instructions',
 						tabindex: '0'
 					};
@@ -39,7 +41,7 @@ const createTodoItem = createWidgetBase.mixin({
 			tagName: 'li',
 			nodeAttributes: [
 				function(this: TodoItem): VNodeProperties {
-					const { completed, editing } = this.state;
+					const { completed, editing } = this.properties;
 					return {
 						classes: { completed, editing }
 					};
@@ -56,24 +58,24 @@ const createTodoItem = createWidgetBase.mixin({
 						blur: todoSave,
 						keypress: todoEditInput
 					},
-					state: { id: state.id, focused, classes: [ 'edit' ] }
+					properties: { id: this.state.id, focused, classes: [ 'edit' ] }
 				};
 				return [
 					v('div.view', {}, [
 						w(createCheckboxInput, {
 							listeners: { change: todoToggleComplete },
-							state: { id: state.id, classes: [ 'toggle' ], checked }
+							properties: { id: this.state.id, classes: [ 'toggle' ], checked }
 						}),
 						w(createLabel, {
 							listeners: {
 								dblclick: todoEdit,
 								keypress: todoEdit
 							},
-							state: { id: state.id, label }
+							properties: { id: this.state.id, label }
 						}),
 						w(createButton, {
 							listeners: { click: todoRemove },
-							state: { id: state.id, classes: [ 'destroy' ] }
+							properties: { id: this.state.id, classes: [ 'destroy' ] }
 						})
 					]),
 					state.editing ?

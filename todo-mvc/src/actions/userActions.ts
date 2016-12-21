@@ -1,7 +1,7 @@
 import { assign } from 'dojo-core/lang';
 import widgetStore from '../stores/widgetStore';
 import { addTodo, deleteCompleted, deleteTodo, toggleAll, updateTodo } from './todoStoreActions';
-import { TodoItemState } from '../widgets/createTodoItem';
+import { TodoItemProperties } from '../widgets/createTodoItem';
 
 interface FormEvent extends Event {
 	target: HTMLInputElement;
@@ -18,7 +18,7 @@ export const todoInput = function({ which, target: { value: label } }: FormInput
 	}
 };
 
-function toggleEditing(todos: TodoItemState[], todoId: string, editing: boolean): TodoItemState[] {
+function toggleEditing(todos: TodoItemProperties[], todoId: string, editing: boolean): TodoItemProperties[] {
 	return todos
 		.filter((todo) => todo.id === todoId)
 		.map((todo) => {
@@ -32,7 +32,7 @@ export const todoEdit = function(this: any, event: KeyboardEvent) {
 	if (event.type === 'keypress' && event.which !== 13 && event.which !== 32) {
 		return;
 	}
-	widgetStore.get('todo-app').then(([ todoListState ]: [ any ]) => {
+	widgetStore.get('todo-app').then((todoListState: any) => {
 		const { todos } = todoListState;
 		todoListState.todos = toggleEditing(todos, id, true);
 		return widgetStore.patch({ id: 'todo-app', todoListState });
@@ -45,7 +45,7 @@ export const todoEditInput = function(this: any, event: FormInputEvent) {
 		todoSave.call(this, event);
 	}
 	else if (event.which === 27) {
-		widgetStore.get('todo-app').then(([ todoListState ]: [ any ]) => {
+		widgetStore.get('todo-app').then(( todoListState: any) => {
 			const { todos } = todoListState;
 			todoListState.todos = toggleEditing(todos, state.id, false);
 			widgetStore.patch({ id: 'todo-app', todoListState });
