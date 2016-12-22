@@ -5,7 +5,6 @@ import { w, v } from 'dojo-widgets/d';
 import { todoToggleAll, updateSearch } from '../actions/userActions';
 import createCheckboxInput from './createCheckboxInput';
 import createTodoItemList from './createTodoItemList';
-import createTodoCardList from './createTodoCardList';
 import createSearchInput from './createSearchInput';
 import { CheckboxInputOptions } from './createCheckboxInput';
 
@@ -37,7 +36,8 @@ const createMainSection = createWidgetBase.mixin({
 			};
 
 			const { activeView } = state;
-			const listFactory = activeView === 'cards' ? createTodoCardList : createTodoItemList;return <DNode[]>[
+
+			return <DNode[]>[
 				w(createCheckboxInput, <CheckboxInputOptions>  checkBoxOptions),
 				state.todos.length ? v('div.searchbar', {}, [
 						v('span.icon', {}),w(createSearchInput, {
@@ -50,7 +50,7 @@ const createMainSection = createWidgetBase.mixin({
 							}
 						})
 					]) : null,
-				w(listFactory, <WidgetOptions<WidgetState, WidgetProperties> > { id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`, properties:state })
+				w(createTodoItemList, <WidgetOptions<WidgetState, WidgetProperties> > { id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`, properties:state })
 			];
 		}
 	}
