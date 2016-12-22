@@ -1,4 +1,4 @@
-import { DNode, Widget, WidgetState, WidgetOptions, WidgetProperties } from 'dojo-widgets/interfaces';
+import { DNode, Widget, WidgetState } from 'dojo-widgets/interfaces';
 import createProjector from 'dojo-widgets/createProjector';
 import { w } from 'dojo-widgets/d';
 

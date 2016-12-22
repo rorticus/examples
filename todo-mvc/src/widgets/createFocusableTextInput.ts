@@ -1,7 +1,7 @@
 import WeakMap from 'dojo-shim/WeakMap';
 import createFormFieldMixin, { FormFieldMixin, FormFieldMixinOptions, FormFieldMixinState } from 'dojo-widgets/mixins/createFormFieldMixin';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
-import { Widget, WidgetOptions, WidgetState, WidgetProperties } from 'dojo-widgets/interfaces';
+import { Widget, WidgetOptions, WidgetState } from 'dojo-widgets/interfaces';
 import { VNodeProperties } from 'dojo-interfaces/vdom';
 
 interface FocusableTextInputProperties {

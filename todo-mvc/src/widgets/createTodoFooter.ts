@@ -1,4 +1,4 @@
-import { Widget, WidgetOptions, WidgetState, DNode, WidgetProperties } from 'dojo-widgets/interfaces';
+import { Widget, WidgetOptions, WidgetState, DNode } from 'dojo-widgets/interfaces';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { v, w } from 'dojo-widgets/d';
 import createButton from 'dojo-widgets/components/button/createButton';

@@ -1,7 +1,7 @@
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { Widget, DNode, WidgetState, WidgetOptions, WidgetProperties } from 'dojo-widgets/interfaces';
 import { todoInput } from '../actions/userActions';
-import { TodoFooterState, default as createTodoFooter } from './createTodoFooter';
+import createTodoFooter from './createTodoFooter';
 import { v, w } from 'dojo-widgets/d';
 import createTitle from './createTitle';
 import createFocusableTextInput from './createFocusableTextInput';

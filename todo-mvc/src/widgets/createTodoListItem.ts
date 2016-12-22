@@ -1,4 +1,4 @@
-import { Widget, WidgetOptions, WidgetState, DNode, WidgetProperties } from 'dojo-widgets/interfaces';
+import { Widget, WidgetOptions, WidgetState, DNode } from 'dojo-widgets/interfaces';
 import { VNodeProperties } from 'dojo-interfaces/vdom';
 import createWidgetBase from 'dojo-widgets/createWidgetBase';
 import { v, w } from 'dojo-widgets/d';

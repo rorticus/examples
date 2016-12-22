@@ -7,6 +7,7 @@ import createCheckboxInput from './createCheckboxInput';
 import createTodoItemList from './createTodoItemList';
 import createSearchInput from './createSearchInput';
 import { CheckboxInputOptions } from './createCheckboxInput';
+import { FormFieldMixinOptions, FormFieldMixinState } from 'dojo-widgets/mixins/createFormFieldMixin';
 
 interface MainSectionProperties {
 	allCompleted: boolean;
@@ -37,10 +38,10 @@ const createMainSection = createWidgetBase.mixin({
 
 			const { activeView } = state;
 
-			return <DNode[]>[
-				w(createCheckboxInput, <CheckboxInputOptions>  checkBoxOptions),
+			return <DNode[]> [
+				w(createCheckboxInput, <CheckboxInputOptions> checkBoxOptions),
 				state.todos.length ? v('div.searchbar', {}, [
-						v('span.icon', {}),w(createSearchInput, {
+						v('span.icon', {}), w(createSearchInput, {
 							properties: {
 								placeholder: 'Quick Filter',
 								value: state.search
@@ -50,7 +51,10 @@ const createMainSection = createWidgetBase.mixin({
 							}
 						})
 					]) : null,
-				w(createTodoItemList, <WidgetOptions<WidgetState, WidgetProperties> > { id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`, properties:state })
+				w(createTodoItemList, <WidgetOptions<WidgetState, WidgetProperties>> {
+					id: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}`,
+					properties: state
+				})
 			];
 		}
 	}
