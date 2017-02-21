@@ -60,6 +60,8 @@ export class IssuesWidget extends ThemeableMixin(WidgetBase)<IssuesWidgetPropert
 	private _loadIssues() {
 		const { user, repo } = this.properties;
 
+		this._loaded = true;
+
 		return request
 			.get(`https://api.github.com/repos/${user}/${repo}/issues`)
 			.then(response => response.json())

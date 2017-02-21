@@ -48,7 +48,7 @@ export default class MainSection extends I18nMixin(ThemeableMixin(WidgetBase))<M
 					onKeyUp: this.searchHandler
 				})
 			]) : null,
-			w(TodoItemList, <any> { ...this.properties, key: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}` })
+			todos.length ? w('TodoItemList', <any> { ...this.properties, key: `todo-item-${activeView === 'cards' ? 'cards' : 'list'}` }) : null
 		]);
 	}
 }
