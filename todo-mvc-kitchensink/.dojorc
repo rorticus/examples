@@ -1,0 +1,10 @@
+{
+	"build-webpack": {
+		"bundles": {
+			"widgets": [
+				"src/widgets/ViewChooser",
+				"src/widgets/TodoFilter"
+			]
+		}
+	}
+}

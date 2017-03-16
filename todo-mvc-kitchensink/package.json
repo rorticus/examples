@@ -33,7 +33,7 @@
     "typescript": "rc"
   },
   "dependencies": {
-    "@dojo/core": "2.0.0-alpha.25",
+    "@dojo/core": "2.0.0-alpha.26",
     "@dojo/has": "^2.0.0-alpha.8",
     "@dojo/loader": "^2.0.0-beta.9",
     "@dojo/routing": "^2.0.0-alpha.10",

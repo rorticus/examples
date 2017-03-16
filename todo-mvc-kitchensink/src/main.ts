@@ -1,4 +1,3 @@
-import './registerWidgets';
 import global from '@dojo/core/global';
 import { assign } from '@dojo/core/lang';
 import loadCldrData from '@dojo/i18n/cldr/load';
@@ -10,6 +9,8 @@ import { Router } from '@dojo/routing/Router';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import registerCustomElement from '@dojo/widget-core/registerCustomElement';
 import likelySubtags from './nls/likelySubtags';
+import registerLazyWidgets from './registerLazyWidgets';
+import './registerWidgets';
 import App from './widgets/App';
 import createGithubIssuesElement from './widgets/custom/createGithubIssuesElement';
 
@@ -28,6 +29,8 @@ interface TodoIdParameter extends Parameters {
 if (global.customElements) {
 	registerCustomElement(createGithubIssuesElement);
 }
+
+registerLazyWidgets();
 
 const appProjector = ProjectorMixin(App);
 const projector = new appProjector();
